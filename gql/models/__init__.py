@@ -10,7 +10,7 @@ Base = declarative_base()
 # user = os.environ['DB_USER']
 # password = os.environ['DB_PASSWORD']
 # database = os.environ['DB_NAME']
-db_url = 
+db_url = f"postgresql://bill:S1kaUjOt3hrC@ep-summer-haze-591455.us-east-2.aws.neon.tech/ceritas"
 engine = create_engine(db_url, convert_unicode=True)
 
 session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
