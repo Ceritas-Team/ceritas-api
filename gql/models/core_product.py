@@ -14,7 +14,7 @@ class CoreProduct(Base):
     name = Column(String)
     label_id = Column(BigInteger, ForeignKey('core_labels.id'))
     hbom = Column(JSON)
-    # current_rating_history_id = Column(String, ForeignKey('core_rating_history.id'))
+    current_rating_history_id = Column(String, ForeignKey('core_rating_history.id'))
     # core_rating_history = relationship("CoreRatingHistory", back_populates="core_products")
     # product_instances = relationship("ProductInstance", back_populates="core_products")
     # core_product_organizations = relationship("CoreProductOrganization", back_populates="core_products")
@@ -23,7 +23,7 @@ class CoreProduct(Base):
     product_instances = relationship("ProductInstance", back_populates="core_products")
     # nvd_linked = relationship("NvdLink", back_populates="core_products")
     core_product_component = relationship("CoreProductComponent", foreign_keys=[CoreProductComponent.parent_id], back_populates="parent")
-    # core_rating_history = relationship("CoreRatingHistory", back_populates="core_products")
+    #core_rating_history = relationship("CoreRatingHistory", foregn_keys=[current_rating_history_id], backref="core_products")
     # company_product = relationship("CompanyProduct", back_populates="core_products")
     # def to_dict(self):
     #     return {
