@@ -17,7 +17,7 @@ class CoreProduct(Base):
     current_rating_history_id = Column(BigInteger, ForeignKey('core_rating_history.id'))
     # core_rating_history = relationship("CoreRatingHistory", back_populates="core_products")
     # product_instances = relationship("ProductInstance", back_populates="core_products")
-    # core_product_organizations = relationship("CoreProductOrganization", back_populates="core_products")
+    #core_product_organizations = relationship("CoreProductOrganization", back_populates="core_product")  # Add this relationship
     # vulnerability_core_product = relationship("VulnerabilityCoreProduct", back_populates="core_products")
     # nvd_products = relationship("NvdProduct", back_populates="core_products")
     product_instances = relationship("ProductInstance", back_populates="core_products")

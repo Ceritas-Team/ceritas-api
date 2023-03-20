@@ -6,6 +6,8 @@ from ..models.core_label import CoreLabel
 from ..models.core_rating_history import CoreRatingHistory
 from .core_label import CoreLabelNode
 from .core_rating_history import CoreRatingHistoryNode
+from .core_organization import CoreOrganizationNode
+from .core_product_organization import CoreProductOrganizationNode
 
 class CoreProductNode(SQLAlchemyObjectType):
     class Meta:
@@ -26,6 +28,7 @@ class CoreProductNode(SQLAlchemyObjectType):
     components = graphene.List(lambda: CoreProductNode)
     core_label = graphene.Field(lambda: CoreLabelNode)
     current_rating = graphene.Field(lambda: CoreRatingHistoryNode)
+    organizations = graphene.List(lambda: CoreOrganizationNode)
 
     def resolve_components(self, info):
         components_relationship = (
@@ -50,6 +53,10 @@ class CoreProductNode(SQLAlchemyObjectType):
         if not current_rating_history_id:
             return None
         return CoreRatingHistory.query.get(current_rating_history_id)
+    
+    def resolve_organizations(self, info):
+        # Use the core_product_organizations relationship to retrieve organizations
+        return [product_organization.core_organization for product_organization in self.core_product_organizations]
     
     @staticmethod
     def get(info):
