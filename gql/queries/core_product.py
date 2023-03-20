@@ -3,11 +3,9 @@ from ..models.core_product import CoreProduct
 from graphene_sqlalchemy import SQLAlchemyObjectType
 import graphene
 from ..models.core_product_component import CoreProductComponent
-from .core_product_component import CoreProductComponentNode
+from ..models.core_label import CoreLabel
+from .core_label import CoreLabelNode
 
-class ComponentNode(graphene.ObjectType):
-    id = graphene.ID()
-    name = graphene.String()
 class CoreProductNode(SQLAlchemyObjectType):
     class Meta:
         model = CoreProduct
@@ -19,10 +17,12 @@ class CoreProductNode(SQLAlchemyObjectType):
             'img_link',
             'jsondata',
             'name',
-            'label_id'
+            'label_id',
+            'hbom'
         )
         
-    components = graphene.List(lambda: ComponentNode)
+    components = graphene.List(lambda: CoreProductNode)
+    core_label = graphene.Field(lambda: CoreLabelNode)
 
     def resolve_components(self, info):
         components_relationship = (
@@ -33,14 +33,14 @@ class CoreProductNode(SQLAlchemyObjectType):
 
         child_ids = [relationship.child_id for relationship in components_relationship]
         child_components = CoreProduct.query.filter(CoreProduct.id.in_(child_ids)).all()
-        components_map = {component.id: component for component in child_components}
 
-        components_result = [
-            ComponentNode(id=component_map.id, name=component_map.name)
-            for component_map in components_map.values()
-        ]
-
-        return components_result
+        return child_components
+    
+    def resolve_core_label(self, info):
+       label_id = self.label_id
+       if not label_id:
+           return None
+       return CoreLabel.query.get(label_id)
     
     @staticmethod
     def get(info):

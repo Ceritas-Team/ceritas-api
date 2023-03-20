@@ -1,17 +1,19 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, String, DateTime, ForeignKey, Enum, JSON, BigInteger
 from . import Base
 from sqlalchemy.orm import relationship
 from .core_product_component import CoreProductComponent
+
 class CoreProduct(Base):
     __tablename__='core_products'
-    id = Column(String, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
+    uuid = Column(String)
     type = Enum('product', 'component', name='type')
-    category = Enum('IT', 'OT', name='category')
+    category = Column(String)
     img_link = Column(String)
-    jsondata = Column(String)
+    jsondata = Column(JSON)
     name = Column(String)
-    label_id = Column(String, ForeignKey('core_labels.id'))
-    # core_labels = relationship("CoreLabel", back_populates="core_products")
+    label_id = Column(BigInteger, ForeignKey('core_labels.id'))
+    hbom = Column(JSON)
     # current_rating_history_id = Column(String, ForeignKey('core_rating_history.id'))
     # core_rating_history = relationship("CoreRatingHistory", back_populates="core_products")
     # product_instances = relationship("ProductInstance", back_populates="core_products")
@@ -30,3 +32,4 @@ class CoreProduct(Base):
     #         "name": self.name,
     #         # Add all other fields of the CoreProduct model here
     #     }
+    core_labels = relationship("CoreLabel", foreign_keys=[label_id], backref="core_products")
