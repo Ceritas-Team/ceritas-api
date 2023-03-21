@@ -39,8 +39,6 @@ class CoreProductNode(SQLAlchemyObjectType):
     current_rating = graphene.Field(lambda: CoreRatingHistoryNode)
     organizations = graphene.Field('gql.queries.CoreOrganizationNode')
     vulnerabilities = graphene.List(lambda: VulnerabilityNode)
-    components = graphene.List(lambda: CoreProductNode)
-
     def resolve_components(self, info):
         components_relationship = (
             CoreProductComponent.query
