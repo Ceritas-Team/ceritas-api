@@ -14,7 +14,7 @@ class CoreOrganization(Base):
 
     # Relationships
     # Assuming you have defined the CoreProductOrganization and CoreRisksHistory models
-    #core_product_organizations = relationship("CoreProductOrganization", back_populates="core_organization")
+    core_product_organizations = relationship("CoreProductOrganization", back_populates="core_organization")
     #core_risks_history = relationship("CoreRisksHistory", backref="core_organization")
 
     # Check constraint

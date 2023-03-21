@@ -11,7 +11,6 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
             'uuid',
             'name',
             'jsondata',
-            'core_product_organizations',
             #'core_risks_history',
         )
 

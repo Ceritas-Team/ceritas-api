@@ -1,6 +1,8 @@
 from sqlalchemy import Column, String, BigInteger, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
 from . import Base
+from .core_product import CoreProduct
+from .core_organization import CoreOrganization
 
 class CoreProductOrganization(Base):
     __tablename__ = 'core_product_organizations'
@@ -8,10 +10,5 @@ class CoreProductOrganization(Base):
     organization_id = Column(BigInteger, ForeignKey('core_organizations.id'), primary_key=True)
     relation = Column(String(255), nullable=False)
 
-    # Check constraint
-    __table_args__ = (
-        CheckConstraint(relation == 'made_by'),
-    )
-
-    core_product = relationship("CoreProduct", backref="core_product_organizations")  # Use back_populates here
-    core_organization = relationship("CoreOrganization", backref="core_product_organizations")
+    core_product = relationship("CoreProduct", back_populates="core_product_organizations")  # Use back_populates here
+    core_organization = relationship("CoreOrganization", back_populates="core_product_organizations")
