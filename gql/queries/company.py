@@ -3,7 +3,6 @@ from ..models.product_instance_group import ProductInstanceGroup
 from ..models.product_instance import ProductInstance
 from ..models.group import Group
 from ..models.core_product import CoreProduct
-from .group import GroupNode
 from .core_product import CoreProductNode
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 import graphene
@@ -50,13 +49,3 @@ class CompanyNode(SQLAlchemyObjectType):
             return Company.query.filter_by(id=info.variable_values['input']['id']).first()
         else:
             return Company.query.all()
-    
-def map_core_product_to_node(core_product):
-    # Define a function to map a CoreProduct instance to a CoreProductNode instance
-    return CoreProductNode(
-        id=core_product.id,
-        name=core_product.name,
-        img_link=core_product.img_link,
-        jsondata=json.loads(core_product.jsondata),
-        label_id=core_product.label_id
-    )

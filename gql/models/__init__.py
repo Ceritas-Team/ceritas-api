@@ -4,7 +4,6 @@ from sqlalchemy import Column, Integer, String, DateTime, create_engine ,inspect
 
 import os
 from sqlalchemy import create_engine
-Base = declarative_base()
 
 # host = os.environ['DB_HOST']
 # user = os.environ['DB_USER']

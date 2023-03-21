@@ -1,4 +1,10 @@
-from ..models import CoreOrganization
+from ..models.core_product_organization import CoreProductOrganization
+from ..models.core_product import CoreProduct
+from ..models.core_organization import CoreOrganization
+from .core_product import CoreProductNode
+from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
+import graphene
+import json
 
 class CoreOrganizationNode(SQLAlchemyObjectType):
     class Meta:
@@ -9,10 +15,25 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
             'uuid',
             'name',
             'jsondata',
-            'core_product_organization',
-            'core_rating_his'
+            'core_products',
+            # 'core_rating_his'
         )
-
+        
+    core_products = graphene.List(lambda: CoreProductNode)
+    
+    def resolve_core_products(self, info):
+        core_products = (
+            CoreProduct.query
+            .join(CoreProductOrganization, CoreProductOrganization.product_id == CoreProducts.id)
+            .filter(CoreProductOrganization.organization_id == self.id)
+            .all()
+        )
+        return core_products
+    
     @staticmethod
     def get(info):
-        return CoreOrganization.query
+        if 'id' in info.variable_values['input']:
+            return CoreOrganization.query.filter_by(id=info.variable_values['input']['id']).first()
+        else:
+            return CoreOrganization.query.all()
+        

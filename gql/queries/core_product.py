@@ -1,4 +1,3 @@
-
 from ..models.core_product import CoreProduct
 from graphene_sqlalchemy import SQLAlchemyObjectType
 import graphene
@@ -24,6 +23,8 @@ class CoreProductNode(SQLAlchemyObjectType):
         
     components = graphene.List(lambda: ComponentNode)
 
+    components = graphene.List(lambda: CoreProductNode)
+
     def resolve_components(self, info):
         components_relationship = (
             CoreProductComponent.query
@@ -33,14 +34,8 @@ class CoreProductNode(SQLAlchemyObjectType):
 
         child_ids = [relationship.child_id for relationship in components_relationship]
         child_components = CoreProduct.query.filter(CoreProduct.id.in_(child_ids)).all()
-        components_map = {component.id: component for component in child_components}
 
-        components_result = [
-            ComponentNode(id=component_map.id, name=component_map.name)
-            for component_map in components_map.values()
-        ]
-
-        return components_result
+        return child_components
     
     @staticmethod
     def get(info):
