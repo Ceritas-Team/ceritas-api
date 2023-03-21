@@ -14,7 +14,6 @@ from ..models.core_rating_history import CoreRatingHistory
 from ..models.vulnerability_core_product import VulnerabilityCoreProduct
 from ..models.core_organization import CoreOrganization
 from .core_label import CoreLabelNode
-from .core_organization import CoreOrganizationNode
 from .core_rating_history import CoreRatingHistoryNode
 from .vulnerability import VulnerabilityNode
 
