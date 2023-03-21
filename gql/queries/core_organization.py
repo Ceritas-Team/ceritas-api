@@ -19,9 +19,12 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
             # 'core_rating_his'
         )
         
-    core_products = graphene.List(lambda: CoreProductNode)
+    core_products = graphene.List(CoreProductNode)
     
     def resolve_core_products(self, info):
+        # from importlib import import_module
+        # CoreProductNode = import_module('.core_product', '..queries').CoreProductNode
+        
         core_products = (
             CoreProduct.query
             .join(CoreProductOrganization, CoreProductOrganization.product_id == CoreProduct.id)
