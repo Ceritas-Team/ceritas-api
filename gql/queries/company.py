@@ -3,7 +3,6 @@ from ..models.product_instance_group import ProductInstanceGroup
 from ..models.product_instance import ProductInstance
 from ..models.group import Group
 from ..models.core_product import CoreProduct
-from .group import GroupNode
 from .core_product import CoreProductNode
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 import graphene

@@ -1,10 +1,10 @@
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, BigInteger
 from sqlalchemy.orm import relationship
 from . import Base
 from .group import Group
 class Company(Base):
     __tablename__ = 'companies'
-    id = Column(String, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     name = Column(String)
     description = Column(String)
     website = Column(String)

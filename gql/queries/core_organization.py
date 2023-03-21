@@ -1,16 +1,18 @@
-from ..models import CoreOrganization
+import graphene
+from graphene_sqlalchemy import SQLAlchemyObjectType
+from ..models.core_organization import CoreOrganization
 
 class CoreOrganizationNode(SQLAlchemyObjectType):
     class Meta:
         model = CoreOrganization
         interfaces = (graphene.relay.Node,)
         only_fields = (
-            'id', 
+            'id',
             'uuid',
             'name',
             'jsondata',
-            'core_product_organization',
-            'core_rating_his'
+            'core_product_organizations',
+            #'core_risks_history',
         )
 
     @staticmethod
