@@ -30,6 +30,8 @@ class CoreProductNode(SQLAlchemyObjectType):
     current_rating = graphene.Field(lambda: CoreRatingHistoryNode)
     organizations = graphene.List(lambda: CoreOrganizationNode)
 
+    components = graphene.List(lambda: CoreProductNode)
+
     def resolve_components(self, info):
         components_relationship = (
             CoreProductComponent.query
@@ -41,7 +43,7 @@ class CoreProductNode(SQLAlchemyObjectType):
         child_components = CoreProduct.query.filter(CoreProduct.id.in_(child_ids)).all()
 
         return child_components
-    
+        
     def resolve_core_label(self, info):
        label_id = self.label_id
        if not label_id:

@@ -1,3 +1,5 @@
+
+
 class CompanyLocation(Base):
     __tablename__ = 'company_location'
     id = Column(String, primary_key=True)
