@@ -14,6 +14,7 @@ from .models import CoreOrganization
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
     # nvd_vendors = graphene.List(NvdVendor)
+
     companies = graphene.List(
         lambda:CompanyNode, 
         id=graphene.String(),
@@ -41,5 +42,6 @@ class Query(graphene.ObjectType):
         if name:
             query = query.filter(CoreOrganization.name == name)
         return query.all()
+
     
 schema = graphene.Schema(query=Query)
