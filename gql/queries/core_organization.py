@@ -24,7 +24,7 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
     def resolve_core_products(self, info):
         core_products = (
             CoreProduct.query
-            .join(CoreProductOrganization, CoreProductOrganization.product_id == CoreProducts.id)
+            .join(CoreProductOrganization, CoreProductOrganization.product_id == CoreProduct.id)
             .filter(CoreProductOrganization.organization_id == self.id)
             .all()
         )
@@ -34,6 +34,8 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
     def get(info):
         if 'id' in info.variable_values['input']:
             return CoreOrganization.query.filter_by(id=info.variable_values['input']['id']).first()
+        if 'name' in info.variable_values['input']:
+            return CoreOrganization.query.filter_by(id=info.variable_values['input']['name']).first()
         else:
             return CoreOrganization.query.all()
         

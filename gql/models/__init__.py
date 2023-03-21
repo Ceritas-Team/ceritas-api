@@ -20,3 +20,4 @@ Base.query = session.query_property()
 metadata = MetaData()
 
 from .company import Company
+from .core_organization import CoreOrganization
