@@ -2,6 +2,7 @@ from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 import graphene
 import json
 from ..models.core_product_component import CoreProductComponent
+
 class CoreProductComponentNode(SQLAlchemyObjectType):
     name = graphene.String()
 

@@ -11,7 +11,7 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
         model = CoreOrganization
         interfaces = (graphene.relay.Node,)
         only_fields = (
-            'id', 
+            'id',
             'uuid',
             'name',
             'jsondata',
@@ -38,4 +38,4 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
             return CoreOrganization.query.filter_by(id=info.variable_values['input']['name']).first()
         else:
             return CoreOrganization.query.all()
-        
+

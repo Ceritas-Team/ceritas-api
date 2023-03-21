@@ -9,8 +9,7 @@ from sqlalchemy import create_engine
 # user = os.environ['DB_USER']
 # password = os.environ['DB_PASSWORD']
 # database = os.environ['DB_NAME']
-db_url = f"postgresql://bill:S1kaUjOt3hrC@ep-summer-haze-591455.us-east-2.aws.neon.tech/ceritas"
-engine = create_engine(db_url, convert_unicode=True)
+engine = create_engine("postgresql://postgres:empath-image-BUDDY@dev-hbom.cd6fzzs1axde.us-east-2.rds.amazonaws.com/cvedb", convert_unicode=True)
 
 session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
