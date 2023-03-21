@@ -15,8 +15,7 @@ class CoreOrganizationNode(SQLAlchemyObjectType):
             'uuid',
             'name',
             'jsondata',
-            'core_products',
-            # 'core_rating_his'
+            #'core_risks_history',
         )
         
     core_products = graphene.List(CoreProductNode)
