@@ -91,5 +91,9 @@ class CoreProductNode(SQLAlchemyObjectType):
         print("INFO", info)
         if 'id' in info.variable_values['input']:
             return CoreProduct.query.filter_by(id=info.variable_values['input']['id']).first()
+        elif 'name' in info.variable_values['input']:
+            return CoreProduct.query.filter_by(name=info.variable_values['input']['name']).first()
+        elif 'uuid' in info.variable_values['input']:
+            return CoreProduct.query.filter_by(uuid=info.variable_values['input']['uuid']).first()
         else:
             return CoreProduct.query.all()
