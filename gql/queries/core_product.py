@@ -14,7 +14,6 @@ from ..models.core_rating_history import CoreRatingHistory
 from ..models.vulnerability_core_product import VulnerabilityCoreProduct
 from ..models.core_organization import CoreOrganization
 from .core_label import CoreLabelNode
-from .core_organization import CoreOrganizationNode
 from .core_rating_history import CoreRatingHistoryNode
 from .vulnerability import VulnerabilityNode
 
@@ -38,9 +37,8 @@ class CoreProductNode(SQLAlchemyObjectType):
     components = graphene.List(lambda: CoreProductNode)
     core_label = graphene.Field(lambda: CoreLabelNode)
     current_rating = graphene.Field(lambda: CoreRatingHistoryNode)
-    organizations = graphene.List(lambda: CoreOrganizationNode)
+    organizations = graphene.Field('gql.queries.CoreOrganizationNode')
     vulnerabilities = graphene.List(lambda: VulnerabilityNode)
-
     components = graphene.List(lambda: CoreProductNode)
 
     def resolve_components(self, info):
@@ -68,18 +66,10 @@ class CoreProductNode(SQLAlchemyObjectType):
         return CoreRatingHistory.query.get(current_rating_history_id)
     
     def resolve_organizations(self, info):
-        core_product_organizations = CoreProductOrganization.query.filter_by(product_id=self.id).all()
-
-        if not core_product_organizations:
-            return []
-
-        organization_ids = [o.organization_id for o in core_product_organizations]
-        organizations = CoreOrganization.query.filter(CoreOrganization.id.in_(organization_ids)).all()
-
-        if not organizations:
-            return []
-
-        return organizations
+        from importlib import import_module
+        CoreOrganizationNode = import_module('.core_organization', '..models').CoreOrganizationNode
+        # Use the core_product_organizations relationship to retrieve organizations
+        return [product_organization.core_organization for product_organization in self.core_product_organizations]
 
     
     def resolve_vulnerabilities(self, info):
@@ -94,7 +84,6 @@ class CoreProductNode(SQLAlchemyObjectType):
             return []
 
         return vulnerabilities
-
     
     @staticmethod
     def get(info):
