@@ -4,6 +4,7 @@ from sqlalchemy.orm import joinedload
 # Third-party library imports
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
+from importlib import import_module
 
 # Local application/library-specific imports
 from ..models.core_label import CoreLabel
@@ -66,7 +67,7 @@ class CoreProductNode(SQLAlchemyObjectType):
         return CoreRatingHistory.query.get(current_rating_history_id)
     
     def resolve_organizations(self, info):
-        from importlib import import_module
+        
         CoreOrganizationNode = import_module('.core_organization', '..models').CoreOrganizationNode
         # Use the core_product_organizations relationship to retrieve organizations
         return [product_organization.core_organization for product_organization in self.core_product_organizations]
