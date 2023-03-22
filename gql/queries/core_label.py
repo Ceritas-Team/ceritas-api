@@ -12,7 +12,16 @@ class CoreLabelNode(SQLAlchemyObjectType):
             'is_visible'
         )
 
+    core_products = graphene.List('gql.queries.CoreProductNode')
+
+    def resolve_core_labels(self, info):
+        return self.core_products
+
     @staticmethod
     def get(info):
-        query = CoreLabel.get_query(info)
-        return query.all()
+        if 'id' in info.variable_values['input']:
+            return CoreLabel.query.filter_by(id=info.variable_values['input']['id']).first()
+        if 'name' in info.variable_values['input']:
+            return CoreLabel.query.filter_by(id=info.variable_values['input']['name']).first()
+        else:
+            return CoreLabel.query.all()

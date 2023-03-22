@@ -9,9 +9,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from .queries.company import CompanyNode
 from .queries.core_organization import CoreOrganizationNode
 from .queries.core_product import CoreProductNode
+from .queries.core_label import CoreLabelNode
 from .models import Company
 from .models import CoreOrganization
 from .models import CoreProduct
+from .models import CoreLabel
 
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
@@ -34,6 +36,12 @@ class Query(graphene.ObjectType):
         id=graphene.String(),
         name=graphene.String(),
         uuid=graphene.String(),
+    )
+
+    core_labels = graphene.List(
+        lambda:CoreLabelNode,
+        id=graphene.String(),
+        name=graphene.String(),
     )
 
     def resolve_companies(self, info, id=None, name=None):
@@ -60,6 +68,14 @@ class Query(graphene.ObjectType):
             query = query.filter(CoreProduct.uuid == uuid)
         if name:
             query = query.filter(CoreProduct.name == name)
+        return query.all()
+    
+    def resolve_core_labels(self, info, id=None, name=None):
+        query = CoreLabel.query
+        if id:
+            query = query.filter(CoreLabel.id == id)
+        if name:
+            query = query.filter(CoreLabel.name == name)
         return query.all()
     
 schema = graphene.Schema(query=Query)
