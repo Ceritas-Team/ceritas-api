@@ -4,6 +4,7 @@ from sqlalchemy.orm import joinedload
 # Third-party library imports
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
+from importlib import import_module
 
 # Local application/library-specific imports
 from ..models.core_label import CoreLabel
@@ -66,7 +67,7 @@ class CoreProductNode(SQLAlchemyObjectType):
         return CoreRatingHistory.query.get(current_rating_history_id)
     
     def resolve_organizations(self, info):
-        from importlib import import_module
+        
         CoreOrganizationNode = import_module('.core_organization', '..models').CoreOrganizationNode
         # Use the core_product_organizations relationship to retrieve organizations
         return [product_organization.core_organization for product_organization in self.core_product_organizations]
@@ -90,5 +91,9 @@ class CoreProductNode(SQLAlchemyObjectType):
         print("INFO", info)
         if 'id' in info.variable_values['input']:
             return CoreProduct.query.filter_by(id=info.variable_values['input']['id']).first()
+        elif 'name' in info.variable_values['input']:
+            return CoreProduct.query.filter_by(name=info.variable_values['input']['name']).first()
+        elif 'uuid' in info.variable_values['input']:
+            return CoreProduct.query.filter_by(uuid=info.variable_values['input']['uuid']).first()
         else:
             return CoreProduct.query.all()
