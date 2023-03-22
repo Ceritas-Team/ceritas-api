@@ -20,3 +20,4 @@ metadata = MetaData()
 
 from .company import Company
 from .core_organization import CoreOrganization
+from .core_product import CoreProduct
